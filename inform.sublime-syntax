@@ -1,0 +1,34 @@
+%YAML 1.2
+---
+name: Inform7
+file_extensions: [i7, i7x, inform, ni]
+scope: source.i7
+
+contexts:
+  main:
+    - match: '"'
+      scope: punctuation.definition.string.begin.Inform7
+      push: string
+    - match: '\['
+      scope: punctuation.definition.comment.begin.Inform7
+      push: comment
+    - match: (Volume|Book|Chapter|Part|Section|Table)\s+\d?\s+-?\s+((?:\w|\s|-)*)
+      scope: storage.type.Inform7
+    - match: \b(Include|Release)\b
+      scope: keyword.control.Inform7
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.example-c
+
+  string:
+    - meta_scope: string.quoted.double.Inform7
+    - match: \\.
+      scope: constant.character.escape.Inform7
+    - match: '"'
+      scope: punctuation.definition.string.end.Inform7
+      pop: true
+
+  comment:
+    - meta_scope: comment.block.Inform7
+    - match: '\]'
+      scope: punctuation.definition.comment.end.Inform7
+      pop: true
